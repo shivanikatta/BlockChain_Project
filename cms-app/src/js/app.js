@@ -13,7 +13,7 @@ App = {
         for (i = 0; i < data.length; i ++) {
           proposalTemplate.find('.panel-title').text(data[i].name);
           proposalTemplate.find('img').attr('src', data[i].picture);
-          proposalTemplate.find('.btn-vote').attr('data-id', data[i].id);
+          proposalTemplate.find('.btn-catselect').attr('data-id', data[i].id);
   
           proposalsRow.append(proposalTemplate.html());
           App.names.push(data[i].name);
@@ -58,6 +58,8 @@ App = {
         $(document).on('click', '#unregister', function(){ var ad = $('#enter_address2').val(); App.handleUnRegister(ad); });
         $(document).on('click', '#canmint', function(){ var ad = $('#enter_address3').val(); App.handleCanMint(ad); });
         $(document).on('click', '#submit-bid', App.fundRequest);
+        $(document).on('click', '.btn-catselect', App.selectCategory);
+        $(document).on('click', '#transfer-token', App.transferFund);
     },
     
       populateAddress : function(){
@@ -169,6 +171,7 @@ App = {
               return voteInstance.raiseRequest(amountValue,categoryValue, {from: account});
             }).then(function(result, err){
                   if(result){
+                      console.log(result)
                       console.log(result.receipt.status);
                       if(parseInt(result.receipt.status) == 1)
                       alert(account + " request raised successfully")
@@ -180,6 +183,67 @@ App = {
               });
           });
       },
+
+      selectCategory: function(event) {
+        event.preventDefault();
+        var proposalId = parseInt($(event.target).data('id'));
+        var voteInstance;
+    
+    
+          App.contracts.vote.deployed().then(function(instance) {
+            voteInstance = instance;
+    
+            return voteInstance.SelectCategoryToDonate(proposalId);
+          }).then(function(result, err){
+                if(result){
+                    var candidatesResults = $("#candidatesResults");
+                    candidatesResults.empty();
+                    console.log("selected catef",proposalId);
+                    console.log("result",result);
+                    console.log("result address",result[0]);
+                    console.log("result amount",result[1]);
+                    $(".tabledisplay").css("display", "block");
+                    var radd = result[0];
+                    var ramount = result[1];
+                    var candidateTemplate = "<tr><th>" + radd + "</td><td>" + ramount + "</td></tr>"
+                    candidatesResults.append(candidateTemplate);
+                    console.log(result.receipt.status);
+                    if(parseInt(result.receipt.status) == 1)
+                    alert(account + " cate done successfully")
+                    else
+                    alert(account + " categ not done successfully due to revert")
+                } else {
+                    alert(account + " categ failed")
+                }   
+            });
+    
+      },
+
+
+      transferFund: function () {
+        event.preventDefault();
+        var voteInstance;
+        var rAddress = $("#raddress").val();
+        var fundAmount = $("#fund-amount").val();
+        var catSelected = $("#selected-cat").val();
+  
+        App.contracts.vote.deployed().then(function(instance) {
+            voteInstance = instance;
+            return voteInstance.FundTransfer(rAddress,fundAmount, catSelected);
+            }).then(function(result, err){
+                if(result){
+                    console.log(result.receipt.status);
+                    if(parseInt(result.receipt.status) == 1)
+                    alert(account + " funds transfered successfully")
+                    else
+                    alert(account + " fund transfer not done successfully due to revert")
+                } else {
+                    alert(account + " fund transfer  failed")
+                }   
+            });
+          
+      },
+
 
 
   

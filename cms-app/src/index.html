@@ -128,11 +128,53 @@
             <img alt="140x140" data-src="holder.js/170x170" class="img-rounded img-center" style="width: 150px; height: 150px;" src="images/Milli.png" data-holder-rendered="true">
             <br/><br/>
             <div class="col-md-12 text-center"> 
-              <button class="btn btn-default btn-vote" type="button" data-id="0">Select</button>
+              <button class="btn btn-default btn-catselect" type="button" data-id="0">Select</button>
             </div>  
           </div>
         </div>
       </div>
+    </div>
+
+    <div class = "tabledisplay" id="content" style="display: none;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Address</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="candidatesResults">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-lg-6 col-lg-offset-1" style="margin-left:20px;">
+      <h2 class="subs-title text-center"> Transfer funds</h2>
+      <div class="row">
+      <label class="subs-title">
+          <b>Enter the address : </b>&nbsp;
+            <input type="text" class="bid-input form-control" id="raddress" placeholder="Enter the address"></input>
+          <br/>
+          <br>
+      </label>
+      </div>
+      <div class="row">
+      <label class="subs-title">
+          <b>Enter the amount : </b>&nbsp;
+            <input type="text" class="bid-input form-control" id="fund-amount" placeholder="Enter the amount in tokens"></input>
+          <br/>
+      </label>
+      </div>
+      <div class="row">
+        <label class="subs-title">
+            <b>Enter the category selected : </b>&nbsp;
+              <input type="text" class="bid-input form-control" id="selected-cat" placeholder="Enter category selected"></input>
+            <br/>
+        </label>
+        </div>
+
+      <center style="padding-top:25px"><button type="submit" id="transfer-token" class="btn btn-primary btn-action align-center">Transfer</button></center>
+      <br/>
     </div>
 
     </div>

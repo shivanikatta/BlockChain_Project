@@ -1,16 +1,16 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "name": "Natural Disaster",
     "picture": "images/Milli.png"
   },
   {
-    "id": 1,
+    "id": 2,
     "name": "Hospitalization purpose",
     "picture": "images/Murphy.png"
   },
   {
-    "id": 2,
+    "id": 3,
     "name": "Educational purpose",
     "picture": "images/radar.png"
   }

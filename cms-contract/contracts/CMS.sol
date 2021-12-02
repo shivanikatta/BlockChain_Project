@@ -103,11 +103,14 @@ contract CMS is IERC20 {
     {
         require(categ < 4, "we have only 3 categories to select");
         if (categ == 1) {
-            return (category1[0], recipients[category1[0]].amountNeeded);
+            uint256 amount_1 = recipients[category1[0]].amountNeeded;
+            return (category1[0], amount_1);
         } else if (categ == 2) {
-            return (category2[0], recipients[category2[0]].amountNeeded);
+            uint256 amount_2 = recipients[category2[0]].amountNeeded;
+            return (category2[0], amount_2);
         } else if (categ == 3) {
-            return (category3[0], recipients[category3[0]].amountNeeded);
+            uint256 amount_3 = recipients[category3[0]].amountNeeded;
+            return (category3[0], amount_3);
         }
     }
 
