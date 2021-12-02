@@ -49,6 +49,7 @@ App = {
       //jQuery('#contract_address').text(App.address);
       
       App.getChairperson();
+      App.checkRecepient();
       return App.bindEvents();
     });
     },
@@ -84,14 +85,34 @@ App = {
           if(App.chairPerson != App.currentAccount){
             $(".onlyadmin").css("display", "none");
             $(".nonadmin").css("display", "block");
-            $(".receipentsonly").css("display", "block");
+            //$(".receipentsonly").css("display", "block");
           }else{
             $(".onlyadmin").css("display", "block");
             $(".nonadmin").css("display", "none");
-            $(".receipentsonly").css("display", "none");
+            //$(".receipentsonly").css("display", "none");
           }
         })
       },
+
+      checkRecepient : function(){
+        App.contracts.vote.deployed().then(function(instance) {
+        App.currentAccount = web3.eth.coinbase;
+        console.log("current account",App.currentAccount);
+        console.log("key as current acc", instance.recipients(App.currentAccount));
+        return instance.recipients(App.currentAccount);
+        }).then(function(recipient) {
+            console.log("no.of registered",recipient);
+            if(recipient[2]){
+                $(".receipentsonly").css("display", "block");
+                $(".nonadmin").css("display", "none");
+            }
+            else{
+                $(".receipentsonly").css("display", "none");
+            }
+
+        })
+      },
+
 
     
       handleRegister: function(addr){

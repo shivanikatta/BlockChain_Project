@@ -63,7 +63,7 @@ contract CMS is IERC20 {
     //     bool isRegistered;
     // }
 
-    mapping(address => Recipient) private recipients;
+    mapping(address => Recipient) public recipients;
 
     modifier isOwner() {
         require(msg.sender == admin, "Only Owner have access");
