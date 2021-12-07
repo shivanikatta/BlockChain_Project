@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Pick your Favorite</title>
+    <title>Charity Management System</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
           <br>
         <div class="row" id="register_div">
           <div style="margin-left: 15px;">
-            <button class="btn btn-info" type="button" id="register">Register</button>
+            <button class="btn btn-success" type="button" id="register">Register</button>
           </div>
         </div>
         <br>
@@ -47,13 +47,17 @@
           <br>
         <div class="row" id="register_div">
           <div style="margin-left: 15px;">
-            <button class="btn btn-info" type="button" id="unregister">UnRegister</button>
+            <button class="btn btn-danger" type="button" id="unregister">UnRegister</button>
           </div>
         </div>
+        <br>
+        <br>
+        <br>
         <br>
       </div>
       <br>
       <div class="container">
+        <h3>Mint tokens to other accounts (only by admin)</h3>
         <div class="row" id="address_div">
           <div style="margin-left: 15px;margin-top: 10px;">
             <span> Address : </span>
@@ -61,15 +65,13 @@
           </div>
         </div>
           <br>
-          <div class="row">
+          
             <label class="subs-title">
                 <b>Enter the amount to Mint : </b>&nbsp;
                   <input type="text" class="bid-input form-control" id="mint-value" placeholder="Enter in tokens to mint"></input>
                 <br/>
-                <br>
             </label>
-            </div>
-            <br>
+            
         <div class="row" id="mint_div">
           <div style="margin-left: 15px;">
             <button class="btn btn-info" type="button" id="canmint">Mint Tokens</button>
@@ -98,7 +100,7 @@
         </label>
         </div>
 
-        <center style="padding-top:25px"><button type="submit" id="submit-bid" class="btn btn-primary btn-action align-center">Request Fund</button></center>
+        <center style="padding-top:25px"><button type="submit" id="submit-amount" class="btn btn-primary btn-action align-center">Request Fund</button></center>
         <br/>
       </div>
     </div>
@@ -114,27 +116,27 @@
         </div>
       </div>
 
-      <div id="proposalsRow" class="row">
+      <div id="categoryRow" class="row">
       </div>
     </div>
 
-    <div id="proposalTemplate" style="display: none;">
+    <div id="categoryTemplate" style="display: none;">
       <div class="col-sm-8 col-md-2 col-lg-3">
         <div class="panel panel-default panel-proposal">
           <div class="panel-heading">
             <h3 class="panel-title" style="text-align:center"></h3>
           </div>
           <div class="panel-body">
-            <img alt="140x140" data-src="holder.js/170x170" class="img-rounded img-center" style="width: 150px; height: 150px;" src="images/Milli.png" data-holder-rendered="true">
+            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 200px; height: 200px;" src="images/education.png" data-holder-rendered="true">
             <br/><br/>
             <div class="col-md-12 text-center"> 
-              <button class="btn btn-default btn-catselect" type="button" data-id="0">Select</button>
+              <button class="btn btn-primary btn-catselect" type="button" data-id="0">Select</button>
             </div>  
           </div>
         </div>
       </div>
     </div>
-
+    <div class="container">
     <div class = "tabledisplay" id="content" style="display: none;">
       <table class="table">
         <thead>
@@ -147,15 +149,15 @@
         </tbody>
       </table>
     </div>
+    
 
     <div class="col-lg-6 col-lg-offset-1" style="margin-left:20px;">
-      <h2 class="subs-title text-center"> Transfer funds</h2>
+      <h1 class="subs-title text-center"> Transfer funds</h1>
       <div class="row">
       <label class="subs-title">
           <b>Enter the address : </b>&nbsp;
             <input type="text" class="bid-input form-control" id="raddress" placeholder="Enter the address"></input>
           <br/>
-          <br>
       </label>
       </div>
       <div class="row">
@@ -176,6 +178,7 @@
       <center style="padding-top:25px"><button type="submit" id="transfer-token" class="btn btn-primary btn-action align-center">Transfer</button></center>
       <br/>
     </div>
+  </div>
 
     </div>
 

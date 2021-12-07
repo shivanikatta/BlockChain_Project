@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Natural Disaster purpose (Category :1)",
+    "picture": "images/naturaldisaster.png"
+  },
+  {
+    "id": 2,
+    "name": "Hospitalization purpose (Category :2)",
+    "picture": "images/hospital.png"
+  },
+  {
+    "id": 3,
+    "name": "Educational/Basic purpose (Category :3)",
+    "picture": "images/education.png"
+  }
+]

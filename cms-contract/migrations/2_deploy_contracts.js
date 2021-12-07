@@ -1,5 +1,5 @@
 var CMS = artifacts.require("CMS");
 
 module.exports = function(deployer) {
-  deployer.deploy(CMS,"ttoken","ttoken");
+  deployer.deploy(CMS,"CMS","CMS");
 };

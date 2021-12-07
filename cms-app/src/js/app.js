@@ -6,16 +6,16 @@ App = {
     chairPerson:null,
     currentAccount:null,
     init: function() {
-      $.getJSON('../proposals.json', function(data) {
-        var proposalsRow = $('#proposalsRow');
-        var proposalTemplate = $('#proposalTemplate');
+      $.getJSON('../categories.json', function(data) {
+        var categoryRow = $('#categoryRow');
+        var categoryTemplate = $('#categoryTemplate');
   
         for (i = 0; i < data.length; i ++) {
-          proposalTemplate.find('.panel-title').text(data[i].name);
-          proposalTemplate.find('img').attr('src', data[i].picture);
-          proposalTemplate.find('.btn-catselect').attr('data-id', data[i].id);
+          categoryTemplate.find('.panel-title').text(data[i].name);
+          categoryTemplate.find('img').attr('src', data[i].picture);
+          categoryTemplate.find('.btn-catselect').attr('data-id', data[i].id);
   
-          proposalsRow.append(proposalTemplate.html());
+          categoryRow.append(categoryTemplate.html());
           App.names.push(data[i].name);
         }
       });
@@ -41,11 +41,11 @@ App = {
     initContract: function() {
         $.getJSON('CMS.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract
-      var voteArtifact = data;
-      App.contracts.vote = TruffleContract(voteArtifact);
+      var cmsArtifact = data;
+      App.contracts.cms = TruffleContract(cmsArtifact);
   
       // Set the provider for our contract
-      App.contracts.vote.setProvider(App.web3Provider);
+      App.contracts.cms.setProvider(App.web3Provider);
       //jQuery('#contract_address').text(App.address);
       
       App.getChairperson();
@@ -58,7 +58,7 @@ App = {
         $(document).on('click', '#register', function(){ var ad = $('#enter_address1').val(); App.handleRegister(ad); });
         $(document).on('click', '#unregister', function(){ var ad = $('#enter_address2').val(); App.handleUnRegister(ad); });
         $(document).on('click', '#canmint', function(){ var ad = $('#enter_address3').val(); App.handleCanMint(ad); });
-        $(document).on('click', '#submit-bid', App.fundRequest);
+        $(document).on('click', '#submit-amount', App.fundRequest);
         $(document).on('click', '.btn-catselect', App.selectCategory);
         $(document).on('click', '#transfer-token', App.transferFund);
     },
@@ -77,7 +77,7 @@ App = {
         });
       },
       getChairperson : function(){
-        App.contracts.vote.deployed().then(function(instance) {
+        App.contracts.cms.deployed().then(function(instance) {
           return instance.admin();
         }).then(function(result) {
           App.chairPerson = result;
@@ -95,14 +95,14 @@ App = {
       },
 
       checkRecepient : function(){
-        App.contracts.vote.deployed().then(function(instance) {
+        App.contracts.cms.deployed().then(function(instance) {
         App.currentAccount = web3.eth.coinbase;
         console.log("current account",App.currentAccount);
         console.log("key as current acc", instance.recipients(App.currentAccount));
         return instance.recipients(App.currentAccount);
         }).then(function(recipient) {
             console.log("no.of registered",recipient);
-            if(recipient[2]){
+            if(recipient[2]){ // which stores the recipient status(registered/unregistered) and its boolean value
                 $(".receipentsonly").css("display", "block");
                 $(".nonadmin").css("display", "none");
             }
@@ -116,53 +116,53 @@ App = {
 
     
       handleRegister: function(addr){
-        var voteInstance;
+        var cmsInstance;
         web3.eth.getAccounts(function(error, accounts) {
         var account = accounts[0];
-        App.contracts.vote.deployed().then(function(instance) {
-          voteInstance = instance;
-          return voteInstance.registerRecipient(addr, {from: account});
+        App.contracts.cms.deployed().then(function(instance) {
+          cmsInstance = instance;
+          return cmsInstance.registerRecipient(addr, {from: account});
         }).then(function(result, err){
             if(result){
                 if(parseInt(result.receipt.status) == 1)
-                alert(addr + " registration done successfully")
+                alert(addr + " registration of recepient done successfully")
                 else
-                alert(addr + " registration not done successfully due to revert")
+                alert(addr + " registration of recepientnot done successfully due to revert")
             } else {
-                alert(addr + " registration failed")
-            }   
+                alert(addr + " registration of recepient failed")
+            }    
         })
         })
     },
 
     handleUnRegister: function(addr){
-        var voteInstance;
+        var cmsInstance;
         web3.eth.getAccounts(function(error, accounts) {
         var account = accounts[0];
-        App.contracts.vote.deployed().then(function(instance) {
-          voteInstance = instance;
-          return voteInstance.unRegisterRecipient(addr, {from: account});
+        App.contracts.cms.deployed().then(function(instance) {
+          cmsInstance = instance;
+          return cmsInstance.unRegisterRecipient(addr, {from: account});
         }).then(function(result, err){
             if(result){
                 if(parseInt(result.receipt.status) == 1)
-                alert(addr + " Unregistration done successfully")
+                alert(addr + " Unregister of recepient done successfully")
                 else
-                alert(addr + " Unregistration not done successfully due to revert")
+                alert(addr + " Unregister of recepient not done successfully due to revert")
             } else {
-                alert(addr + " Unregistration failed")
+                alert(addr + " Unregister of recepient failed")
             }   
         })
         })
     },
 
     handleCanMint: function(addr){
-        var voteInstance;
+        var cmsInstance;
         var mintValue = $("#mint-value").val();
         web3.eth.getAccounts(function(error, accounts) {
         var account = accounts[0];
-        App.contracts.vote.deployed().then(function(instance) {
-          voteInstance = instance;
-          return voteInstance.canMint(addr,mintValue, {from: account});
+        App.contracts.cms.deployed().then(function(instance) {
+          cmsInstance = instance;
+          return cmsInstance.canMint(addr,mintValue, {from: account});
         }).then(function(result, err){
             if(result){
                 if(parseInt(result.receipt.status) == 1)
@@ -179,17 +179,17 @@ App = {
 
     fundRequest: function () {
         event.preventDefault();
-        var voteInstance;
+        var cmsInstance;
         var amountValue = $("#amount-value").val();
         var categoryValue = $("#category-value").val();
 
         web3.eth.getAccounts(function(error, accounts) {
             var account = accounts[0];
       
-            App.contracts.vote.deployed().then(function(instance) {
-              voteInstance = instance;
+            App.contracts.cms.deployed().then(function(instance) {
+              cmsInstance = instance;
       
-              return voteInstance.raiseRequest(amountValue,categoryValue, {from: account});
+              return cmsInstance.raiseRequest(amountValue,categoryValue, {from: account});
             }).then(function(result, err){
                   if(result){
                       console.log(result)
@@ -208,13 +208,13 @@ App = {
       selectCategory: function(event) {
         event.preventDefault();
         var proposalId = parseInt($(event.target).data('id'));
-        var voteInstance;
+        var cmsInstance;
     
     
-          App.contracts.vote.deployed().then(function(instance) {
-            voteInstance = instance;
+          App.contracts.cms.deployed().then(function(instance) {
+            cmsInstance = instance;
     
-            return voteInstance.SelectCategoryToDonate(proposalId);
+            return cmsInstance.SelectCategoryToDonate(proposalId);
           }).then(function(result, err){
                 if(result){
                     var candidatesResults = $("#candidatesResults");
@@ -230,11 +230,11 @@ App = {
                     candidatesResults.append(candidateTemplate);
                     console.log(result.receipt.status);
                     if(parseInt(result.receipt.status) == 1)
-                    alert(account + " cate done successfully")
+                    alert(account + " category selection done successfully")
                     else
-                    alert(account + " categ not done successfully due to revert")
+                    alert(account + " category selection not done successfully due to revert")
                 } else {
-                    alert(account + " categ failed")
+                    alert(account + " category selection failed")
                 }   
             });
     
@@ -243,14 +243,14 @@ App = {
 
       transferFund: function () {
         event.preventDefault();
-        var voteInstance;
+        var cmsInstance;
         var rAddress = $("#raddress").val();
         var fundAmount = $("#fund-amount").val();
         var catSelected = $("#selected-cat").val();
   
-        App.contracts.vote.deployed().then(function(instance) {
-            voteInstance = instance;
-            return voteInstance.FundTransfer(rAddress,fundAmount, catSelected);
+        App.contracts.cms.deployed().then(function(instance) {
+          cmsInstance = instance;
+            return cmsInstance.FundTransfer(rAddress,fundAmount, catSelected);
             }).then(function(result, err){
                 if(result){
                     console.log(result.receipt.status);
